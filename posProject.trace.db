@@ -1,0 +1,20 @@
+2017-03-09 22:00:52 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO STATES VALUES(NULL, 'Massachusetts', .0625)
+INSERT[*] INTO STATES VALUES(NULL, 'Michigan', .06)
+INSERT INTO STATES VALUES(NULL, 'Minnesota', .06875)
+INSERT INTO STATES VALUES(NULL, 'Mississippi', .07)
+INSERT INTO STATES VALUES(NULL, 'Missouri', .04225)
+INSERT INTO STATES VALUES(NULL, 'Montana', 1)
+INSERT INTO STATES VALUES(NULL, 'Nebraska', .055)
+                     s "; SQL statement:
+insert into states values(null, 'Massachusetts', .0625)
+insert into states values(null, 'Michigan', .06)
+insert into states values(null, 'Minnesota', .06875)
+insert into states values(null, 'Mississippi', .07)
+insert into states values(null, 'Missouri', .04225)
+insert into states values(null, 'Montana', 1)
+insert into states values(null, 'Nebraska', .055)
+//select * from states [42000-191]
+2017-03-11 10:38:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES( NULL, ADMIN , ADMIN, 3247 NEWTON[*] DRIVE,  VIRGINIA, 22042, ADMIN@ADMIN.COM) "; expected "[, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+insert into users values( null, Admin , Admin, 3247 Newton Drive,  Virginia, 22042, Admin@admin.com) [42001-191]
