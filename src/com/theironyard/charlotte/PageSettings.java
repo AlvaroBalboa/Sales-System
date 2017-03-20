@@ -13,10 +13,17 @@ public class PageSettings {
     boolean userTaken=false;
     boolean createUser=false;
 
+    public void toggle() {
+        this.createUser = !this.createUser;
+    }
+
 
     public PageSettings(int id,int userId) {
         this.id=id;
         this.userId=userId;
+    }
+
+    public PageSettings() {
     }
 
     public boolean isCreateUser() {

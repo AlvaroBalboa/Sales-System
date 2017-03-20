@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<a href="/checkout" class="btn btn-default" role="button">Checkout Now</a>
+
+
+{{#showCart}}
+<table>
+    <thead>
+    <th>Item Id</th>
+    <th>Item Quantity</th>
+    <th>Item Price</th>
+    </thead>
+    <tbody>
+    <td>{{itemId}}</td>
+    <td>{{itemQuantity}}</td>
+    <td>{{itemPrice}}</td>
+    </tbody>
+</table>
+{{/showCart}}
+</body>
+</html>

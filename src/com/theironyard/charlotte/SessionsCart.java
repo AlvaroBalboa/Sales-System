@@ -4,12 +4,20 @@ package com.theironyard.charlotte;
  * Created by souporman on 3/11/17.
  */
 public class SessionsCart {
+    int id;
     int itemId;
     int itemQuantity;
     double itemPrice;
     double currentPrice;
 
+
+
     public SessionsCart(int itemId, int itemQuantity,double itemPrice) {
+        this.itemId = itemId;
+        this.itemQuantity = itemQuantity;
+        this.itemPrice=itemPrice;
+    }
+    public SessionsCart(int id, int itemId, int itemQuantity,double itemPrice) {
         this.itemId = itemId;
         this.itemQuantity = itemQuantity;
         this.itemPrice=itemPrice;

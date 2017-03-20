@@ -34,7 +34,6 @@ public class Main {
         stmt.execute();
     }
 
-
     //Use this in order to see if the name is in use
     public static boolean userNameInUse(String name) throws SQLException {
         boolean thereIsAlready = false;
@@ -100,6 +99,23 @@ public class Main {
         return entireList;
     }
 
+    public static Products oneProductObject(int id) throws SQLException{
+        PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM products WHERE id = ?");
+        stmt.setInt(1, id);
+        ResultSet results = stmt.executeQuery();
+        if (results.next()) {
+            // Step through each result
+            // ONLY if there is an an answer to the query will the product array get made otherwise it will stay empty
+            String productName = results.getString("productName");
+            String shortDescription = results.getString("shortDescription");
+            double price = results.getDouble("price");
+            int quantityAvailable = results.getInt("quantityAvailable");
+            String pictureURL = results.getString("pictureURL");
+
+            return new Products(id, productName, shortDescription, price, quantityAvailable, pictureURL,false);
+        }
+        return null;
+    }
 
 //    public static ArrayList<Products> showUserAllProducts(String userName) throws SQLException {
 //
@@ -150,45 +166,43 @@ public class Main {
 //    }
 
     static String currentUserSession;
+    static int sessionCartCounter=1;
     static String currentUserCartSession;
 
     public static void main(String[] args) throws SQLException {
 
-        Spark.init();
-        Server.createWebServer().start();
         Spark.staticFileLocation("/templates");
+        Spark.init();
+       // Server.createWebServer().start();
         createTables();
 
         Spark.get("/",
                 ((request, response) -> {
                     HashMap model = new HashMap();
 
-                    //TODO CHANGE TO THE NEW GETTER
-                    //This is the new sessions login that uses the database instead of the array??
                     Session session = request.session();
                     String currentUser = session.attribute(currentUserSession);
-
+                    //Makes it so you cant shop unless you login
                     if (currentUser == null) {
-
+//                        ArrayList allItems=showAllProducts();
+//                        model.put("products", allItems);
                         return new ModelAndView(model, "login.html");
                     }
-                    User user = getUser(currentUser);
 
+                    User user = getUser(currentUser);
                     //This is a catch for the default user who can do anything BUT shop which
                     //will kick him to the login window ALSO populates entire list with no login.
-                    if(user.getUserName().equalsIgnoreCase("default")){
-
-                        ArrayList allItems=showAllProducts();
-                        model.put("products", allItems);
-                        return new ModelAndView(model, "home.html");
-                        
-                    }
+//                    if(user.getUserName().equalsIgnoreCase("default")){
+//
+//                        ArrayList allItems=showAllProducts();
+//                        model.put("products", allItems);
+//                        return new ModelAndView(model, "home.html");
+//
+//                    }
                     //TODO THIS HAS TO POPULATE THE SHOPPING SCREEN
 
                     ArrayList allItems=showAllProducts();
                     model.put("products", allItems);
-
-//                    m.put("userName", user.getUserName());
 
                     return new ModelAndView(model, "home.html");
 
@@ -285,41 +299,141 @@ public class Main {
         //TODO WILL SAID SOMETHING ABOUT MAKING OTHER ADMIN ACCOUNTS BUT THAT SEEMS OVERKILL
         //TODO ANOTHER TODO WAS TO UNDERSTAND THAT THE 'CART' IS IN SESSIONS BUT THE CHECKOUT AT THE END
         //TODO SHOULD BE THE TABLE AT THE VERY END
+
+        //TODO THIS IS THE PAGE FOR THE SPECIFIC ITEM THIS IS THE ONLY PAGE THAT ALLOWS FOR THE USER TO ADD TO CART
+        //TODO THIS ALSO MUST HAVE A BUTTON FOR GOING BACK TO THE SHOP ALL MENU
+
+        Spark.get("/productpage/:id",
+                ((request, response) -> {
+                    HashMap model = new HashMap();
+
+                    //This populates the specific page for the one item
+                    int specificItemId = Integer.valueOf(request.params("id"));
+                    ArrayList productPage = new ArrayList();
+                    productPage.add(oneProductObject(specificItemId));
+
+                    model.put("products", productPage);
+
+                    return new ModelAndView(model, "pageDescription.html");
+
+                }),
+                new MustacheTemplateEngine()
+
+                );
+
+        Spark.post("/addToCart",
+                ((request, response) -> {
+
+                    int productID = Integer.valueOf(request.queryParams("productCode"));
+                    int quantity = Integer.valueOf(request.queryParams("quantity"));
+
+                    Products selectedItem = oneProductObject(productID);
+                    SessionsCart sessionsCart = new SessionsCart(sessionCartCounter, selectedItem.getId(),quantity,selectedItem.getPrice());
+
+                    Session session = request.session();
+                    session.attribute(Integer.toString(sessionCartCounter), sessionsCart);
+                    sessionCartCounter++;
+
+                    response.redirect("/");
+                    return"";
+                })
+                );
+
+        Spark.get("/seeCart",
+                ((request, response) -> {
+                    HashMap model = new HashMap();
+
+                    Session session = request.session();
+                    String currentUser = session.attribute(currentUserSession);
+
+                    //Makes it so you cant shop unless you login
+                    if (currentUser == null) {
+                        return new ModelAndView(model, "login.html");
+                    }
+
+                    User user = getUser(currentUser);
+                    ArrayList myCart = new ArrayList();
+                    for(int i =1;i <= sessionCartCounter;i++){
+                        SessionsCart sessionsCart = session.attribute(Integer.toString(i));
+                        myCart.add(sessionsCart);
+                    }
+                    model.put("showCart",myCart);
+                    return new ModelAndView(model, "seeCart.html");
+
+                }),
+                new MustacheTemplateEngine()
+        );
+
+//          THIS IS WAY TO FANCY FOR NO REASON
+//        Spark.get("/loginPage",
+//                ((request, response) -> {
 //
+//                    User user = getUser("Default");
+//                    //currentUserSession=user.getEmailAddress();
 //
+//                    Session session = request.session();
+//                    session.attribute(currentUserSession, user.emailAddress);
 //
-//        Spark.post("/enter_song",
-//                (req, res) -> {
-//                    String name = req.queryParams("artist");
-//                    String title = req.queryParams("song");
+//                    HashMap model = new HashMap();
 //
-//                    saveSong(name, title);
+//                    String currentUser = session.attribute(currentUserSession);
 //
-//                    res.redirect("/songs");
-//                    return "";
-//                });
+//                    if (currentUser == null) {
+//                        throw new Exception("There is no user current user active impossible since I set " +
+//                                "one up before you got to this stage ");
+//                    }
 //
-//        Spark.get("/songs",
-//                (req, res) -> {
-//                    HashMap m = new HashMap<>();
-//                    ArrayList<Song> songs = getAllSongs();
-//                    m.put("songs", songs);
-//                    return new ModelAndView(m, "songs.html");
-//                }, new MustacheTemplateEngine());
+//                    //TODO THIS HAS TO POPULATE THE SHOPPING SCREEN
 //
-//        Spark.post("/save_vote",
-//                (req, res) -> {
-//                    PreparedStatement s = getConnection().prepareStatement(
-//                            "INSERT INTO votes (song_id, user_id, rating) VALUES (?, ?, ?)");
-//                    s.setInt(1, Integer.valueOf(req.queryParams("song")));
-//                    s.setInt(2, currentUser().getId());
-//                    s.setInt(3, Integer.valueOf(req.queryParams("rating")));
-//                    s.execute();
+//                    ArrayList<PageSettings> allOptions= new ArrayList<>();
 //
-//                    res.redirect("/songs");
-//                    return "";
-//                });
+//                    allOptions.add(user.settings);
 //
+//                    model.put("pageSettings", allOptions);
+//
+//                    return new ModelAndView(model, "login.html");
+//
+//                }),new MustacheTemplateEngine()
+//                );
+//              THIS WAS TRYING TO BE REALLY FANCY
+//        Spark.post("/createBool",
+//                ((request, response) -> {
+//
+//                    Session session = request.session();
+//                    String currentUser = session.attribute(currentUserSession);
+//
+//                    User user = getUser(currentUser);
+//                    user.settings.toggle();
+//                    if (currentUser == null) {
+//                        throw new Exception("This cannot be null unless you bypassed clicking the login button " +
+//                                "to ge the login window");
+//                    }
+//
+//                    User user = getUser(currentUser);
+//
+//                    if(user.settings.createUser){
+//                        user.settings.createUser = false;
+//                    }
+//                    else {
+//                        user.settings.createUser = true;
+//                    }
+//
+//                    response.redirect("/loginPage");
+//                    return"";
+//                })
+//                );
+
+        Spark.post(
+                "/logout",
+                ((request, response) -> {
+                    Session session = request.session();
+                    session.invalidate();
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+                    //TODO DELETING ITEMS OF THEIR CARTS
 //        Spark.post("/delete-entry",
 //                (((request, response) -> {
 //                    int someId = Integer.valueOf(request.queryParams("postId"));
@@ -329,22 +443,6 @@ public class Main {
 //                }))
 //        );
 
-//        Spark.post("/wrong-pass",
-//                ((request, response) -> {
-//                    String username = request.queryParams("username");
-//                    String password = request.queryParams("password");
-//
-//                    if (user.getUserName().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
-//                        Session session = request.session();
-//                        session.attribute("userName", username);
-//                        response.redirect("/");
-//                        return "";
-//                    }
-//                    response.redirect("/wrong-pass");
-//                    return "";
-//                })
-//
-//        );
 
 //        Spark.post("/create-message",
 //                ((request, response) -> {
@@ -362,47 +460,6 @@ public class Main {
 //                    return "";
 //                })
 //        );
-
-
-//        Spark.get("/?editId={{id}}",
-//                ((request, response) -> {
-//                    Session session=request.session();
-//                    String name = session.attribute("userName");
-//                    User user = users.get(name);
-//                    if(user == null){
-//                        throw new Exception("User is not logged in");
-//                    }
-//                    String id = request.queryParams("id");
-//                    int postId=Integer.valueOf(id);
-//                    user.getPosts().remove(postId);
-//                    response.redirect("/create-message");
-//                    return "";
-//                })
-//        );
-//        Spark.get("/?deleteId={{id}}",
-//                ((request, response) -> {
-//                    Session session=request.session();
-//                    String name = session.attribute("userName");
-//                    User user = users.get(name);
-//                    if(user == null){
-//                        throw new Exception("User is not logged in");
-//                    }
-//                    String id = request.queryParams("deleteId");
-//                    int postId=Integer.valueOf(id);
-//                    user.getPosts().remove(postId);
-//                    response.redirect(request.headers("Referer"));
-//                    return "";
-//                })
-//        );
-        Spark.post(
-                "/logout",
-                ((request, response) -> {
-                    Session session = request.session();
-                    session.invalidate();
-                    response.redirect("/");
-                    return "";
-                })
-        );
 
     }
 }

@@ -1,0 +1,44 @@
+<html>
+<head>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav>
+    <h1 align="center">THE SHOP</h1>
+    <br/>
+    <div align="center" >
+        <form action="/gotoLogin" method="post"><button class="btn btn-default" type="submit" >Login</button></form>
+        <form action="/gotoShop" method="post"><button class="btn btn-default" type="submit">Shop</button></form>
+        <form action="/logout" method="post"><button class="btn btn-default" type="submit">Logout</button></form>
+    </div>
+</nav>
+
+{{#products}}
+<div class="theItemSelectionPage" align="center">
+    <div class="theItemSelectionPage" align="center">
+            <img src="{{pictureURL}}">
+        <br/>
+        <span class="desc_line1">{{productName}}</span>
+    </div>
+<br/>
+<hr/>
+    <div class="plus_detail_wrap" align="center">
+        <span class="desc_line1">{{shortDescription}}</span><br/>
+        <span class='desc_line2'><strong>${{price}}</strong></span>
+        <form action="/addToCart" method="post">
+            <input type="hidden" value="{{id}}" name="productCode">
+            <select name="quantity"><option selected disabled>quantity</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <button type="submit">add to cart</button>
+        </form>
+    </div>
+</div>
+{{/products}}
+
+
+</body>
+</html>

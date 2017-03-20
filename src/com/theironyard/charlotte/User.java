@@ -1,5 +1,7 @@
 package com.theironyard.charlotte;
 
+import java.util.ArrayList;
+
 /**
  * Created by souporman on 3/9/17.
  */
@@ -11,6 +13,8 @@ public class User {
     String state;
     int zipCode;
     String emailAddress;
+
+    PageSettings settings = new PageSettings();
 
     public User(String userName, String password, String address, String state, int zipCode, String emailAddress) {
         this.userName = userName;

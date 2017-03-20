@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <link href="style.css" rel="stylesheet" type="text/css">
+
+    <!--THIS IS SOME BOOTSTRAP THAT I COULDNT DECIPHER ONLY USED FOR BUTTONS-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
 </head>
 <body>
-
 <!--int userId;-->
 <!--boolean inCart=false;-->
 <!--boolean inStock=true;-->
@@ -12,85 +28,44 @@
 <!--boolean wrongPass=false;-->
 <!--boolean userTaken=false;-->
 <!--boolean createUser=false;-->
-
-<span class="notranslate">
-<script>
-var folderLabel = "CASUAL SHOES";
-folderLabel = folderLabel.replace("&","%26");
-var hasFlash=function(){var flashVer=8;if(navigator.appVersion.indexOf("MSIE")!=-1&&navigator.appVersion.indexOf("Windows")>-1){document.write('<script language="VBScript"\> \non error resume next \nhasFlash = (IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash." & '+flashVer+'))) \n<\/script\> \n');if(window.hasFlash!=null)return window.hasFlash}if(navigator.mimeTypes&&navigator.mimeTypes["application/x-shockwave-flash"]&&navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin){var b=(navigator.plugins["Shockwave Flash 2.0"]||navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];return parseInt(b.substring(0,b.indexOf(",")))>=flashVer}return false}();
-hasFlash = false;
-var hpFlash="<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\" codebase=\"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\"  width=\"400\" height=\"33\"> <param name=\"movie\" value=\"/media/flash/catTitle_v2_m56577569830512227.swf?catName=" + folderLabel + "\"> <param name=\"quality\" value=\"high\"> <param name=\"wmode\" value=\"transparent\"> <embed src=\"/media/flash/catTitle_v2_m56577569830512227.swf?catName=" + folderLabel + "\" quality=\"high\" wmode=\"transparent\"  pluginspage=\"http://www.macromedia.com/go/getflashplayer\" type=\"application/x-shockwave-flash\" width=\"400\" height=\"33\"></embed></object>";
-</script>
-</span>
-<div>
-
-
-    <div><a  id="CASUALSHOES"></a><p id="catTitleCASUAL SHOES" class="plusFolderTitle"><span>CASUAL SHOES</span></p></div>
-
-
+<nav>
+    <h1 align="center">THE SHOP</h1>
+    <br/>
+<div align="center">
+    <a href="/loginPage" class="btn btn-default" role="button">Login</a>
+    <a href="/" class="btn btn-default" role="button">Shop</a>
+    <a href="/seeCart" class="btn btn-default" role ="button">see my cart</a>
+    <form action="/logout" method="post"><button class="btn btn-default" type="submit">Logout</button></form>
 </div>
-<script>
-    if (hasFlash) {
-        document.getElementById("catTitleCASUAL SHOES").innerHTML = hpFlash;
-    }
-</script>
+</nav>
+<hr/>
+<br/>
+<br/>
 
+<!--<div class="plus_folder_container" data-folderlabel="boatshoesmoccasins" data-columns class="gx-cont">-->
+{{#products}}
+    <div class="plus_product  plusGrid3N ">
 
-<div class="plus_folder_container" data-folderlabel="boatshoesmoccasins" data-columns class="gx-cont">
-
-    <div id="boatshoesmoccasins-1" class="plus_product  plusGrid3N boatshoesmoccasins   swatch-item swatch-item-empty" data-price="  $98.00" data-productid="845524441794816" data-prodcode="13508" data-productcode="13508" data-basecode="13508" data-colorcode="" data-altname="" data-folder="boatshoesmoccasins" data-selectedcolor="GY5822" data-preset="shoes316" data-presetname="$cat3N$">
-
-        <div class="plus_image_container" id="13508">
-
-
-            <a class="plus_image_link product-image-wrap" href="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~13508/13508.jsp?color_name=mercury-grey"><img src="https://i.s-jcrew.com/is/image/jcrew/13508_GY5822?$cat3N$" class="swatch-active" data-colorcode="GY5822"></a>
+        <div class="plus_image_container">
+            <a class="plus_image_link product-image-wrap" href="/productpage/{{id}}">
+                <img src="{{pictureURL}}"></a>
         </div>
-        <button type="button" class="get-quickshop" data-producturl="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~13508/13508.jsp?color_name=mercury-grey" data-productcode="13508" data-selectedcolor="GY5822" data-shottype="">QUICK SHOP</button>
+
         <span class="plus_VCH"><span class="plus_VCHW">
-        <div class="plus_prod_details plus_VCHContent">
-            <div class="plus_detail_wrap">
-            <a href="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~13508/13508.jsp?color_name=mercury-grey" >
-            <span class="desc_line1 notranslate">Sperry&reg; for J.Crew Authentic Original 2-eye broken-in boat shoes</span>
 
-                    <span class='desc_line2 notranslate'>  $98.00</strong></span>
-
-
-            <span class="desc_line4">SHOP IT ></span>
-            </a>
-
-      				<div class="desc_line5 swatch-see-more"><a href="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~13508/13508.jsp?color_name=mercury-grey">see more colors<span class="icon"></span></a></div>
-
-            </div>
-        </div>
-      </span></span>
-        <div class="product-swatches"></div>
-    </div>
-
-    {{#products}}
-        <div id="boatshoesmoccasins-5" class="plus_product  plusGrid3N boatshoesmoccasins   swatch-item swatch-item-empty"
-             data-price="  $120.00" data-productid="845524441860056">
-
-            <div class="plus_image_container" id="E0854">
-                <a class="plus_image_link product-image-wrap"
-                   href="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~E0854/E0854.jsp">
-                    <img src="https://i.s-jcrew.com/is/image/jcrew/E0854_EF0291?$cat3N$" class="swatch-active"></a>
-            </div>
-
-            <span class="plus_VCH"><span class="plus_VCHW">
-                <div class="plus_prod_details plus_VCHContent">
-                    <div class="plus_detail_wrap">
-                    <a href="https://www.jcrew.com/mens_category/shoes/boatshoesmoccasins/PRDOVR~E0854/E0854.jsp" >
-                    <span class="desc_line1 notranslate">Sperry&reg; for J.Crew driving moccasins</span>
-                            <span class='desc_line2 notranslate'>  $120.00</strong></span>
-                    <span class="desc_line4">SHOP IT ></span>
-                    </a>
-
-                    </div>
+            <div class="plus_prod_details plus_VCHContent">
+                <!--THIS IS THE WRAPPER FOR TEXT NOT TO GO OUTSIDE OF PICTURE PARAMS-->
+                <div class="plus_detail_wrap">
+                    <!--MAKES THE TEXT A LINK TO THE SHOE-->
+                <a href="/productpage/{{id}}" >
+                    <span class="desc_line1">{{productName}}</span>
+                    <span class='desc_line2'><strong>${{price}}</strong></span>
+                </a>
                 </div>
-            </span></span>
-        </div>
-    {{/products}}
-</div>
+            </div>
+          </span></span>
+    </div>
+{{/products}}
 
 
 </body>
