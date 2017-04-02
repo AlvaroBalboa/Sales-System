@@ -51,7 +51,7 @@ public class Main {
 
     //This is simply get User object with user name
     public static User getUser(String currentUserInput) throws SQLException {
-        PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM users WHERE userName = ?");
+        PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM users WHERE emailAdress = ?");
         stmt.setString(1, currentUserInput);
         ResultSet results = stmt.executeQuery();
         if (results.next()) {
