@@ -23,5 +23,10 @@
     </tbody>
 </table>
 {{/showCart}}
+
+<form action="/checkout" method="post">
+    <input type="hidden" value="{{totalPrice=itemPrice+=}}" name="wholeCart"/>
+    <button type="submit">CHECKOUT NOW</button>
+</form>
 </body>
 </html>

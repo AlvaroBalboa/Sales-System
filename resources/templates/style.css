@@ -5,6 +5,9 @@ html {
 .header__logo--wrapper {
     overflow: hidden
 }
+body{
+    color: black;
+}
 
 #ftr {
     clear: both

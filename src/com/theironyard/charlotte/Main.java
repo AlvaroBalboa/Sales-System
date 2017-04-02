@@ -364,6 +364,30 @@ public class Main {
                 new MustacheTemplateEngine()
         );
 
+        Spark.post("/checkout",
+                ((request, response) -> {
+                    HashMap model = new HashMap();
+
+                    Session session = request.session();
+                    String currentUser = session.attribute(currentUserSession);
+
+                    if (currentUser == null) {
+                        return new ModelAndView(model, "login.html");
+                    }
+
+                    User user = getUser(currentUser);
+
+
+                    int myCartPrice = Integer.valueOf(request.queryParams("wholeCart"));
+//                    for(int i =1;i <= sessionCartCounter;i++){
+//                        SessionsCart sessionsCart = session.attribute(Integer.toString(i));
+//                        myCart.add(sessionsCart);
+//                    }
+
+                    return "";
+                })
+        )
+
 //          THIS IS WAY TO FANCY FOR NO REASON
 //        Spark.get("/loginPage",
 //                ((request, response) -> {
