@@ -200,6 +200,7 @@ public class Main {
 //
 //                    }
                     //TODO THIS HAS TO POPULATE THE SHOPPING SCREEN
+                    //TODO DONE
 
                     ArrayList allItems=showAllProducts();
                     model.put("products", allItems);
@@ -376,6 +377,7 @@ public class Main {
                     }
 
                     User user = getUser(currentUser);
+                    //TODO THIS IS UPDATED TO FIX THE PREVIOUS ISSUES
 
 
                     int myCartPrice = Integer.valueOf(request.queryParams("wholeCart"));
@@ -386,7 +388,7 @@ public class Main {
 
                     return "";
                 })
-        )
+        );
 
 //          THIS IS WAY TO FANCY FOR NO REASON
 //        Spark.get("/loginPage",
